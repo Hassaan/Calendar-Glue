@@ -1,9 +1,9 @@
 {
-  "name": "My First Extension",
+  "name": "Calendar Glue",
   "version": "1.0",
-  "description": "The first extension that I made.",
+  "description": "An awesome extension to manage your calendar!",
   "browser_action": {
-    "default_icon": "icon.png",
+    "default_icon": "/images/icon.png",
     "popup": "popup.html"
   },
   "permissions": [
