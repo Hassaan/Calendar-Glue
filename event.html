@@ -140,7 +140,30 @@
           });
           
           $("#distance").parent().hide();
-          $("#submit").button();
+          
+          //form submission handling
+          $('#eventForm').submit(function(event) {
+                alert('action triggered');
+                console.log($(this).serializeArray());
+                inputs = $(this).serializeArray();
+                event.preventDefault();
+
+                alert('test 1 passed');
+                
+                eventName = inputs[0].value;
+                startTime = inputs[2].value;
+                eventLocation = inputs[6].value;
+                
+                alert('test 2 passed');
+                
+                FB.api('/me/events','post',{name:eventName,start_time:2272718028,location:eventLocation},function(resp) {
+                  console.log(resp.id);
+                  }); //close facebook
+                
+
+                }); //close form submit event binding
+          }); //close doc.ready
+
      });
      
      function addMarker(point, text) {
@@ -236,39 +259,6 @@
      }
 </script>
 
-<style type="text/css">
-#map_canvas {
-  min-width:357px;
-  max-width:557px;
-  overflow-x:hidden;
-  height:375px;
-}
-
-label {
-  width:110px;
-  display: inline-block;
-  text-align:right;
-}
-
-input {
-  min-width: 335px;
-  margin-left: 15px;
-}
-
-#submit {
-     margin-top: 10px;
-     right: 0px; 
-     display: inline-block; 
-     float: right;
-}
-
-#distanceParent {
-     margin-top: 10px;
-     font-size: 24px;
-     display: inline-block;
-     border: none;
-}
-</style>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -311,9 +301,9 @@ input {
    }(document));
 </script>
 
-     <form>
+     <form id="eventForm">
           <fieldset class="ui-widget-content">
-               <legend class="ui-widget-header ui-corner-all">Correct the mistakes we made</legend>
+               <legend class="ui-widget-header ui-corner-all">Correct any incorrect guesses</legend>
                
                <label for="title">Title:</label>
                <input id="title" type="text" class="ui-state-default ui-corner-all">
