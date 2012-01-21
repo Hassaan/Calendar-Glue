@@ -157,12 +157,12 @@
           
           //form submission handling
           $('#eventForm').submit(function(event) {
-                alert('action triggered');
+                //alert('action triggered');
                 console.log($('#eventForm').serializeArray());
                 inputs = $(this).serializeArray();
                 event.preventDefault();
 
-                alert('test 1 passed');
+                //alert('test 1 passed');
                 
                 //this should be in a try block
                 eventName = inputs[0].value;
@@ -174,7 +174,7 @@
                   console.log(resp.id);
                   }); //close facebook
                 
-               alert('test 2 passed');
+               //alert('test 2 passed');
 
 
                 }); //close form submit event binding
