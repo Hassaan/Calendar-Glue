@@ -1,5 +1,5 @@
 {
-  "name": "Add to Calendar",
+  "name": "Calendar Glue",
   "version": "1.0",
   "description": "This extension lets you add events encountered on web pages to your calendar, and lets your friends know about them.",
   "background_page" : "background.html",
