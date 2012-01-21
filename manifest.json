@@ -1,12 +1,20 @@
 {
-  "name": "Calendar Glue",
+  "name": "Add to Calendar",
   "version": "1.0",
-  "description": "An awesome extension to manage your calendar!",
+  "description": "This extension lets you add events encountered on web pages to your calendar, and lets your friends know about them.",
+  "background_page" : "background.html",
   "browser_action": {
-    "default_icon": "/images/icon.png",
-    "popup": "popup.html"
+    "default_icon": "/images/calendar19.png",
+    "default_title": "Show Calendar"
   },
   "permissions": [
-    "http://api.flickr.com/"
-  ]
+    "http://*.google.com/", "https://*.google.com/",
+    "contextMenus",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "16": "/images/calendar16.png"
+  }
 }
