@@ -1,10 +1,60 @@
 <html>
 <head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
+<script type="text/javascript" src="js/jquery.js"> </script>
+<script type="text/javascript" src="js/jquery-ui.js"> </script>
+
+<script type="text/javascript"
+ src="http://maps.googleapis.com/maps/api/js?sensor=true">
+</script>
+
+<style type="text/css">
+#map_canvas {
+  min-width:357px;
+  max-width:557px;
+  overflow-x:hidden;
+  height:375px;
+}
+</style>
+
+<script type="text/javascript">
+     var map, geocoder, panorama, point, marker;
+     $(document).ready(function(){
+          var myOptions = {
+               center: new google.maps.LatLng(-34.397, 150.644),
+               zoom: 15,
+               mapTypeId: google.maps.MapTypeId.ROADMAP,
+               backgroundColor: "black"
+          };
+          map = new google.maps.Map($("#map_canvas")[0], myOptions);		
+          geocoder = new google.maps.Geocoder();
+          panorama = map.getStreetView();
+          
+          //If the browser supports HTML5 geolocation
+          if(navigator.geolocation) {          
+               navigator.geolocation.getCurrentPosition(plotMarker);
+          }
+     });
+     
+     
+     function plotMarker(position) {
+          //Creates a variable called point and sends the latitude and longitude to Google Maps to get your position
+          point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+          
+          marker = new google.maps.Marker({
+               position: point,
+               map: map,
+               title: "You are here"
+          });
+          
+          map.setCenter(point);
+     }
+</script>
 </head>
 <body>
 <div id="fb-root"></div>
-<script>
+<script type="text/javascript">
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '279003798830246', // App ID
@@ -43,16 +93,17 @@
    }(document));
 </script>
 
-<h1>Correct the mistakes we made</h1>
-<form>
-Title: <input type="text" name="title" /><br />
-Description: <input type="text" name="desc" /><br />
-<br />
-Start Date: <input type="text" name="startdate" /><br />
-Start time: <input type="text" name="starttime" /><br />
-End Date: <input type="text" name="enddate" /><br />
-End time: <input type="text" name="endtime" /><br />
-Location: <input type="text" name="loc" />
-</form>
+     <h1>Correct the mistakes we made</h1>
+     <form>
+     Title: <input type="text" name="title" /><br />
+     Description: <input type="text" name="desc" /><br />
+     <br />
+     Start Date: <input type="text" name="startdate" /><br />
+     Start time: <input type="text" name="starttime" /><br />
+     End Date: <input type="text" name="enddate" /><br />
+     End time: <input type="text" name="endtime" /><br />
+     Location: <input type="text" name="loc" />
+     </form>
+     <div id="map_canvas"></div>
 </body>
 </html>
