@@ -242,7 +242,7 @@
      function zoomAndDraw() {
           var bounds = new google.maps.LatLngBounds();
                              
-          if((typeof(startMarker) == "object" && (typeof(endMarker) == "object") {
+          if((typeof(startMarker) == "object") && (typeof(endMarker) == "object")) {
                bounds.extend(startMarker.getPosition());
                bounds.extend(endMarker.getPosition());
                map.fitBounds(bounds);
