@@ -7,6 +7,6 @@
     "popup": "popup.html"
   },
   "permissions": [
-    "http://api.flickr.com/"
+    "contextMenus"
   ]
 }

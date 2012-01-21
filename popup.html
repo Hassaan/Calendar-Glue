@@ -26,7 +26,7 @@ img {
 </style>
 
 <script type="text/javascript">
-     var map, geocoder, panorama;
+     var map, geocoder, panorama, point, marker;
      $(document).ready(function(){
           var myOptions = {
                center: new google.maps.LatLng(-34.397, 150.644),
@@ -36,7 +36,22 @@ img {
           };
           map = new google.maps.Map($("#map_canvas")[0], myOptions);		
           geocoder = new google.maps.Geocoder();
-          panorama = map.getStreetView();	
+          panorama = map.getStreetView();
+          
+          //If the browser supports HTML5 geolocation
+          if(navigator.geolocation) {
+               function hasPosition(position) {
+                    //Creates a variable called point and sends the latitude and longitude to Google Maps to get your position
+                    point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+               }
+          
+               navigator.geolocation.getCurrentPosition(hasPosition);
+          }
+          marker = new google.maps.Marker({
+               position: point,
+               map: map,
+               title: "You are here"
+          });
      });
 </script>
 
