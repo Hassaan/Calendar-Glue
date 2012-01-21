@@ -16,5 +16,7 @@
   ],
   "icons": {
     "16": "/images/calendar16.png"
+    "19": "/images/calendar19.png"
+    "42": "/images/calendar42.png"
   }
 }
