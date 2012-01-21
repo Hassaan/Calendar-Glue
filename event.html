@@ -178,7 +178,10 @@
 
 
                 }); //close form submit event binding
-
+               
+               $(function() {
+                     $( "#useDatepicker" ).datepicker();
+                });
 
      });
      
@@ -358,7 +361,7 @@
                </br>
                
                <label for="startdate">Start Date:</label>
-               <input id="startdate" type="text" class="ui-state-default ui-corner-all" name="startDate">
+               <input id="startdate" type="text" class="ui-state-default ui-corner-all useDatepicker" name="startDate">
                </br>
                <label for="starttime">Start Time:</label>
                <input id="starttime" type="text" class="ui-state-default ui-corner-all" name="startTime">
