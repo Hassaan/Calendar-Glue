@@ -241,31 +241,33 @@
      
      function zoomAndDraw() {
           var bounds = new google.maps.LatLngBounds();
-                              
-          bounds.extend(startMarker.getPosition());
-          bounds.extend(endMarker.getPosition());
-          map.fitBounds(bounds);
-          
-          request = {
-               origin: startMarker.getPosition(),
-               destination: endMarker.getPosition(),                              
-               travelMode: google.maps.DirectionsTravelMode.DRIVING,
-               optimizeWaypoints: true
-          };
-          
-          directionsService.route(request, function(response, status) {
-               if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
-                    var distance;
-                    //for(var i = 0; i < response.routes[0].legs.length; i++){
-                         distance = response.routes[0].legs[0].distance.text;
-                    //}
-                    $("#distance").text(distance);
-                    $("#distance").parent().show();
-               } else {
-                    $("#distance").parent().hide();
-               }
-          });
+                             
+          if((typeof(startMarker) == "object" && (typeof(endMarker) == "object") {
+               bounds.extend(startMarker.getPosition());
+               bounds.extend(endMarker.getPosition());
+               map.fitBounds(bounds);
+               
+               request = {
+                    origin: startMarker.getPosition(),
+                    destination: endMarker.getPosition(),                              
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING,
+                    optimizeWaypoints: true
+               };
+               
+               directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                         directionsDisplay.setDirections(response);
+                         var distance;
+                         //for(var i = 0; i < response.routes[0].legs.length; i++){
+                              distance = response.routes[0].legs[0].distance.text;
+                         //}
+                         $("#distance").text(distance);
+                         $("#distance").parent().show();
+                    } else {
+                         $("#distance").parent().hide();
+                    }
+               });
+          }
      }
      
      function removeMarker(marker) {
