@@ -20,6 +20,7 @@
 <script type="text/javascript">
      var text;
      var access_token;
+     var event;
      
      function auth() {
           var config = {
@@ -38,13 +39,6 @@
           });
      }
      
-     document.addEventListener("DOMContentLoaded", function () {
-          text = window.location.hash.substring(1);
-          if (text) {
-               auth();
-          }
-     });
-     
      function loadCookies() {
           var cr = []; if (document.cookie != '') {
                var ck = document.cookie.toString().split('; ');
@@ -60,8 +54,20 @@
           return cr;
      }
      
-     function getresult(root) {
-          console.log(root);
+     function getresult(data) {
+          console.log('get result');
+          console.log(data);
+          console.log('end get result');
+          
+          event = $(JSON.stringify(data.items[data.items.length-1]));
+          
+          if(event.summary){$("#title").val(event.summary)};
+          if(event.discription){$("#startdate").val(event.start.dateTime.split("T")[0])};
+          if(event.discription){$("#enddate").val(event.end.dateTime.split("T")[0])};
+          if(event.discription){$("#starttime").val(event.start.dateTime.split("T")[1].split("-")[0])};
+          if(event.discription){$("#endtime").val(event.end.dateTime.split("T")[1].split("-")[0])};
+          if(event.discription){$("#desc").val(event.discription)};
+          if(event.location){$("#loc").val(event.location)};
      }
      
      function addevent(text) {
@@ -87,16 +93,22 @@
      }
      
      function getevent() {
-          url="https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token="+access_token+"&maxResults=20&orderBy=updated";
-          $.ajax(url,{crossDomain: true, dataType: "jsonp", jsonp: false, jsonpCallback: "getresult"} /*,function(data) { console.log(data); }*/)
-          .complete(function(data) {
-               console.log(data);
-          });
+          url="https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token="+access_token+"&orderBy=updated&callback=?";
+          //$.ajax({url: url, crossDomain: true, dataType: "jsonp", jsonp: false, success: "getresult"});
+          $.getJSON(url, getresult);
      }
 
      //Maps code.
      var map, geocoder, panorama, startMarker, endMarker, directionDisplay, directionsService;
      $(document).ready(function(){
+     
+          window.onload = function () {
+               text = window.location.hash.substring(1);
+               if (text) {
+                    auth();
+               }
+          };     
+     
           var myOptions = {
                center: new google.maps.LatLng(-34.397, 150.644),
                zoom: 15,
