@@ -67,7 +67,7 @@
           if(event.start){$("#starttime").val(event.start.dateTime.split("T")[1].split("-")[0])};
           if(event.end){$("#endtime").val(event.end.dateTime.split("T")[1].split("-")[0])};
           if(event.discription){$("#desc").val(event.discription)};
-          if(event.location){$("#loc").val(event.location)};
+          if(event.location){$("#loc").val(event.location); codeEndAddress();};
      }
      
      function addevent(text) {
@@ -152,6 +152,8 @@
           });
           
           $("#distance").parent().hide();
+          
+          $("#submitButton").button();
           
           //form submission handling
           $('#eventForm').submit(function(event) {
@@ -373,7 +375,7 @@
                     
                <div id="map_canvas"></div>
                <span id="distanceParent" class="ui-state-default">Distance: <span id="distance"></span></span>
-               <input type="submit" value="Create Event"/>
+               <input id="submitButton" type="submit" value="Create Event"/>
           </fieldset>
      </form>
 </body>
