@@ -1,7 +1,19 @@
-<style>
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+<script type="text/javascript" src="js/jquery.js"> </script>
+<script type="text/javascript" src="js/jquery-ui.js"> </script>
+
+<script type="text/javascript"
+ src="http://maps.googleapis.com/maps/api/js?sensor=true">
+</script>
+
+<style type="text/css">
 body {
   min-width:357px;
   overflow-x:hidden;
+  height:175px;
 }
 
 img {
@@ -13,38 +25,23 @@ img {
 }
 </style>
 
-<script>
-var req = new XMLHttpRequest();
-req.open(
-    "GET",
-    "http://api.flickr.com/services/rest/?" +
-        "method=flickr.photos.search&" +
-        "api_key=90485e931f687a9b9c2a66bf58a3861a&" +
-        "text=hello%20world&" +
-        "safe_search=1&" +  // 1 is "safe"
-        "content_type=1&" +  // 1 is "photos only"
-        "sort=relevance&" +  // another good one is "interestingness-desc"
-        "per_page=20",
-    true);
-req.onload = showPhotos;
-req.send(null);
-
-function showPhotos() {
-  var photos = req.responseXML.getElementsByTagName("photo");
-
-  for (var i = 0, photo; photo = photos[i]; i++) {
-    var img = document.createElement("image");
-    img.src = constructImageURL(photo);
-    document.body.appendChild(img);
-  }
-}
-
-// See: http://www.flickr.com/services/api/misc.urls.html
-function constructImageURL(photo) {
-  return "http://farm" + photo.getAttribute("farm") +
-      ".static.flickr.com/" + photo.getAttribute("server") +
-      "/" + photo.getAttribute("id") +
-      "_" + photo.getAttribute("secret") +
-      "_s.jpg";
-}
+<script type="text/javascript">
+     var map, geocoder, panorama;
+     $(document).ready(function(){
+          var myOptions = {
+               center: new google.maps.LatLng(-34.397, 150.644),
+               zoom: 8,
+               mapTypeId: google.maps.MapTypeId.ROADMAP,
+               backgroundColor: "black"
+          };
+          map = new google.maps.Map($("#map_canvas")[0], myOptions);		
+          geocoder = new google.maps.Geocoder();
+          panorama = map.getStreetView();	
+     });
 </script>
+
+  <body>
+  Map!!!!
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
