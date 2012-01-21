@@ -162,16 +162,18 @@
 
                 alert('test 1 passed');
                 
+                //this should be in a try block
                 eventName = inputs[0].value;
                 startTime = inputs[2].value;
                 eventLocation = inputs[6].value;
                 
-                alert('test 2 passed');
                 
                 FB.api('/me/events','post',{name:eventName,start_time:2272718028,location:eventLocation},function(resp) {
                   console.log(resp.id);
                   }); //close facebook
                 
+               alert('test 2 passed');
+
 
                 }); //close form submit event binding
 
@@ -371,7 +373,7 @@
                     
                <div id="map_canvas"></div>
                <span id="distanceParent" class="ui-state-default">Distance: <span id="distance"></span></span>
-               <button id="submit">Create Event</button>
+               <input type="submit" value="Create Event"/>
           </fieldset>
      </form>
 </body>
