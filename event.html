@@ -166,12 +166,13 @@
                 startTime = inputs[2].value;
                 eventLocation = inputs[6].value;
                 
-                alert('test 2 passed');
                 
                 FB.api('/me/events','post',{name:eventName,start_time:2272718028,location:eventLocation},function(resp) {
                   console.log(resp.id);
                   }); //close facebook
                 
+               alert('test 2 passed');
+
 
                 }); //close form submit event binding
 
