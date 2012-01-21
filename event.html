@@ -13,27 +13,30 @@
 </script>
 
 <script type="text/javascript">
+     var text;
+     var access_token;
+     
      function auth() {
           var config = {
           'client_id': '449320697674.apps.googleusercontent.com',
           'scope': 'https://www.googleapis.com/auth/calendar'
           };
           gapi.auth.authorize(config, function() {
-          console.log('login complete');
-          console.log(gapi.auth.getToken());
-          token = gapi.auth.getToken();
-          document.cookie = 'access_token=' + token.access_token + ',expires=' + token.expires_in;
+               console.log('login complete');
+               console.log(gapi.auth.getToken());
+               token = gapi.auth.getToken();
+               document.cookie = 'access_token=' + token.access_token + ',expires=' + token.expires_in;
+               
+               //start the magic!
+               addevent(text);
+               getevent();
           });
      }
      
-     var text;
-     var access_token;
      document.addEventListener("DOMContentLoaded", function () {
           text = window.location.hash.substring(1);
           if (text) {
-               //auth();
-               addevent(text);
-               getevent();
+               auth();
           }
      });
      
@@ -80,7 +83,10 @@
      
      function getevent() {
           url="https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token="+access_token+"&maxResults=20&orderBy=updated";
-          $.ajax(url,{crossDomain: true,dataType: "jsonp",jsonp: false, jsonpCallback: "getresult"} /*,function(data) { console.log(data); }*/);
+          $.ajax(url,{crossDomain: true, dataType: "jsonp", jsonp: false, jsonpCallback: "getresult"} /*,function(data) { console.log(data); }*/)
+          .complete(function(data) {
+               console.log(data);
+          });
      }
 
      //Maps code.
