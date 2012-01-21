@@ -23,7 +23,7 @@ function getClickHandler() {
           var screenWidth = screen.height;
           var screenHeight = screen.width;
           var popupWidth = 550;
-          var popupHeight = 705;
+          var popupHeight = 725;
          
           var leftPosition =  Math.floor(screenWidth/2);
           var topPosition = Math.floor(screenHeight/2 - popupHeight);
