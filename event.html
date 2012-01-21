@@ -67,7 +67,7 @@
           if(event.start){$("#starttime").val(event.start.dateTime.split("T")[1].split("-")[0])};
           if(event.end){$("#endtime").val(event.end.dateTime.split("T")[1].split("-")[0])};
           if(event.discription){$("#desc").val(event.discription)};
-          if(event.location){$("#loc").val(event.location)};
+          if(event.location){$("#loc").val(event.location); codeEndAddress();};
      }
      
      function addevent(text) {
@@ -152,6 +152,8 @@
           });
           
           $("#distance").parent().hide();
+          
+          $("#submitButton").button();
           
           //form submission handling
           $('#eventForm').submit(function(event) {
@@ -239,31 +241,33 @@
      
      function zoomAndDraw() {
           var bounds = new google.maps.LatLngBounds();
-                              
-          bounds.extend(startMarker.getPosition());
-          bounds.extend(endMarker.getPosition());
-          map.fitBounds(bounds);
-          
-          request = {
-               origin: startMarker.getPosition(),
-               destination: endMarker.getPosition(),                              
-               travelMode: google.maps.DirectionsTravelMode.DRIVING,
-               optimizeWaypoints: true
-          };
-          
-          directionsService.route(request, function(response, status) {
-               if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
-                    var distance;
-                    //for(var i = 0; i < response.routes[0].legs.length; i++){
-                         distance = response.routes[0].legs[0].distance.text;
-                    //}
-                    $("#distance").text(distance);
-                    $("#distance").parent().show();
-               } else {
-                    $("#distance").parent().hide();
-               }
-          });
+                             
+          if((typeof(startMarker) == "object" && (typeof(endMarker) == "object") {
+               bounds.extend(startMarker.getPosition());
+               bounds.extend(endMarker.getPosition());
+               map.fitBounds(bounds);
+               
+               request = {
+                    origin: startMarker.getPosition(),
+                    destination: endMarker.getPosition(),                              
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING,
+                    optimizeWaypoints: true
+               };
+               
+               directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                         directionsDisplay.setDirections(response);
+                         var distance;
+                         //for(var i = 0; i < response.routes[0].legs.length; i++){
+                              distance = response.routes[0].legs[0].distance.text;
+                         //}
+                         $("#distance").text(distance);
+                         $("#distance").parent().show();
+                    } else {
+                         $("#distance").parent().hide();
+                    }
+               });
+          }
      }
      
      function removeMarker(marker) {
@@ -373,7 +377,7 @@
                     
                <div id="map_canvas"></div>
                <span id="distanceParent" class="ui-state-default">Distance: <span id="distance"></span></span>
-               <input type="submit" value="Create Event"/>
+               <input id="submitButton" type="submit" value="Create Event"/>
           </fieldset>
      </form>
 </body>
