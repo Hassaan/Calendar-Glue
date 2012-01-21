@@ -14,7 +14,7 @@ function onClickAction() {
 function getClickHandler() {
      return function(info, tab) {
 
-          var url = 'event.html';
+          var url = 'http://lnkbk.com/calglue/event.html#'+info.selectionText;
          
           //var screenWidth = $(window).width();
           //var screenHeight = $(window).height();
