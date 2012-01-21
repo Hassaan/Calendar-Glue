@@ -158,7 +158,7 @@
           //form submission handling
           $('#eventForm').submit(function(event) {
                 alert('action triggered');
-                console.log($(this).serializeArray());
+                console.log($('#eventForm').serializeArray());
                 inputs = $(this).serializeArray();
                 event.preventDefault();
 
