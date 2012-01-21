@@ -10,26 +10,6 @@
  src="http://maps.googleapis.com/maps/api/js?sensor=true">
 </script>
 
-<style type="text/css">
-#map_canvas {
-  min-width:357px;
-  max-width:557px;
-  overflow-x:hidden;
-  height:375px;
-}
-
-label {
-  width:110px;
-  display: inline-block;
-  text-align:right;
-}
-
-input {
-  min-width:340px;
-  margin-left: 15px;
-}
-</style>
-
 <script type="text/javascript">
      var map, geocoder, panorama, startMarker, endMarker, directionDisplay, directionsService;
      $(document).ready(function(){
@@ -74,6 +54,9 @@ input {
           $("#loc").keyup(function(event){
                codeEndAddress();
           });
+          
+          $("#distance").parent().hide();
+          $("#submit").button();
      });
      
      function addMarker(point, text) {
@@ -106,6 +89,7 @@ input {
           } else {
                if(typeof(startMarker) == "object"){
                     startMarker.setMap(null);
+                    directionsDisplay.setDirections({routes: new Array()});
                }
           }          
      }
@@ -127,6 +111,7 @@ input {
           } else {
                if(endMarker){
                     endMarker.setMap(null);
+                    directionsDisplay.setDirections({routes: new Array()});
                }
           }          
      }
@@ -148,6 +133,14 @@ input {
           directionsService.route(request, function(response, status) {
                if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
+                    var distance;
+                    //for(var i = 0; i < response.routes[0].legs.length; i++){
+                         distance = response.routes[0].legs[0].distance.text;
+                    //}
+                    $("#distance").text(distance);
+                    $("#distance").parent().show();
+               } else {
+                    $("#distance").parent().hide();
                }
           });
      }
@@ -158,6 +151,40 @@ input {
           }
      }
 </script>
+
+<style type="text/css">
+#map_canvas {
+  min-width:357px;
+  max-width:557px;
+  overflow-x:hidden;
+  height:375px;
+}
+
+label {
+  width:110px;
+  display: inline-block;
+  text-align:right;
+}
+
+input {
+  min-width: 335px;
+  margin-left: 15px;
+}
+
+#submit {
+     margin-top: 10px;
+     right: 0px; 
+     display: inline-block; 
+     float: right;
+}
+
+#distanceParent {
+     margin-top: 10px;
+     font-size: 24px;
+     display: inline-block;
+     border: none;
+}
+</style>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -201,11 +228,9 @@ input {
 </script>
 
      <form>
-     <fieldset class="ui-widget-content">
-     <legend class="ui-widget-header ui-corner-all">Correct the Mistakes we Made</legend>
-     
-     <table>
-          <tbody>
+          <fieldset class="ui-widget-content">
+               <legend class="ui-widget-header ui-corner-all">Correct the mistakes we made</legend>
+               
                <label for="title">Title:</label>
                <input id="title" type="text" class="ui-state-default ui-corner-all">
                </br>
@@ -230,10 +255,11 @@ input {
                </br>
                <label for="curr_loc">Your Location:</label>
                <input id="curr_loc" type="text" class="ui-state-default ui-corner-all">
-          </tbody>
-     </table>
-     <div id="map_canvas"></div>
-     </fieldset>
+                    
+               <div id="map_canvas"></div>
+               <span id="distanceParent" class="ui-state-default">Distance: <span id="distance"></span></span>
+               <button id="submit">Create Event</button>
+          </fieldset>
      </form>
 </body>
 </html>
