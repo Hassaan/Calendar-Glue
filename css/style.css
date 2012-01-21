@@ -1,0 +1,35 @@
+.hide {
+	display: none;
+}
+
+#map_canvas {
+  min-width:357px;
+  max-width:557px;
+  overflow-x:hidden;
+  height:375px;
+}
+
+label {
+  width:110px;
+  display: inline-block;
+  text-align:right;
+}
+
+input {
+  min-width: 335px;
+  margin-left: 15px;
+}
+
+#submit {
+     margin-top: 10px;
+     right: 0px; 
+     display: inline-block; 
+     float: right;
+}
+
+#distanceParent {
+     margin-top: 10px;
+     font-size: 24px;
+     display: inline-block;
+     border: none;
+}

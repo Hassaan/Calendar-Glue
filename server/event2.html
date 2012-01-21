@@ -1,0 +1,111 @@
+<html>
+<head>
+<script src="js/jquery.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<script tpye="text/javascript">
+$(document).ready(function() {
+    $('#eventForm').submit(function(event) {
+      alert('action triggered');
+      console.log($(this).serializeArray());
+      inputs = $(this).serializeArray();
+      event.preventDefault();
+
+      alert('test 1 passed');
+      
+      eventName = inputs[0].value;
+      startTime = inputs[2].value;
+      eventLocation = inputs[6].value;
+      
+      alert('test 2 passed');
+      
+      FB.api('/me/events','post',{name:eventName,start_time:2272718028,location:eventLocation},function(resp) {
+        console.log(resp.id);
+        }); //close facebook
+      
+
+      }); //close form submit event binding
+}); //close doc.ready
+
+</script>
+</head>
+<body>
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '279003798830246', // App ID
+        channelUrl : '//WWW.YOUR_DOMAIN.COM/channel.html', // Channel File
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        xfbml      : true  // parse XFBML
+      });
+
+
+      // check for active session cookie already existing, if not prompt use to login (hide fields)
+  	FB.getLoginStatus(function(response) {
+  	  if (response.status === 'connected') {
+  	    // the user is logged in and connected to your
+  	    // app, and response.authResponse supplies
+  	    // the user's ID, a valid access token, a signed
+  	    // request, and the time the access token 
+  	    // and signed request each expire
+  	    var uid = response.authResponse.userID;
+  	    var accessToken = response.authResponse.accessToken;
+
+        //hide login button
+        $('.fb-login-button').addClass('hide');
+
+  	  } else if (response.status === 'not_authorized') {
+  	    // the user is logged in to Facebook, but not connected to the app
+  	    //initiate auth flow
+  	    alert('the app is not authorized');
+
+  	  } else {
+  	    // the user isn't even logged in to Facebook.
+  	    alert('the user isn\'t logged into facebook');
+        //display login button
+  	  }
+  	 });
+      
+      //Subscribe to the login event and check if successful
+      FB.Event.subscribe('auth.login', function(response) {
+      	console.log(response); //alert('the current event status has changed to: ' + response.status)
+        if (response.authResponse) {
+        //hide login button
+        $('.fb-login-button').addClass('hide');
+        
+        //free and clear to make api calls now
+
+        }
+        else {
+          alert('massive failure! Hide under a rock!')
+        }
+      });
+
+    };
+
+    // Load the SDK Asynchronously
+    (function(d){
+       var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "https://connect.facebook.net/en_US/all.js";
+       d.getElementsByTagName('head')[0].appendChild(js);
+     }(document));
+  </script>
+
+
+  <div class="fb-login-button" data-scope="create_event">Login with Facebook</div>
+  <h1>Correct any incorrect guesses</h1>
+    <form id="eventForm">
+    Title: <input type="text" name="title" /><br />
+    Description: <input type="text" name="desc" /><br />
+    <br />
+    Start Date: <input type="text" name="startdate" /><br />
+    Start time: <input type="text" name="starttime" /><br />
+    End Date: <input type="text" name="enddate" /><br />
+    End time: <input type="text" name="endtime" /><br />
+    Location: <input type="text" name="loc" />
+    <input type="submit" value="Create event" id="create-event">
+    </form>
+  </body>
+</html>
