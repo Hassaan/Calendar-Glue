@@ -31,7 +31,7 @@ input {
 </style>
 
 <script type="text/javascript">
-     var map, geocoder, panorama, point, marker;
+     var map, geocoder, panorama, startMarker, endMarker;
      $(document).ready(function(){
           var myOptions = {
                center: new google.maps.LatLng(-34.397, 150.644),
@@ -44,30 +44,56 @@ input {
           panorama = map.getStreetView();
           
           //If the browser supports HTML5 geolocation
-          if(navigator.geolocation) {          
+          if(navigator.geolocation) {
                navigator.geolocation.getCurrentPosition(function(position) {
-                    //Creates a variable called point and sends the latitude and longitude to Google Maps to get your position
-                    point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                    
-                    marker = new google.maps.Marker({
-                         position: point,
-                         map: map,
-                         title: "You are here"
-                    });
-                    
+                    var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    startMarker = addMarker(point, "You are here");
                     map.setCenter(point);
-                    
-                    
+          
                     geocoder.geocode( { 'location': point}, function(results, status) {
                          if (status == google.maps.GeocoderStatus.OK) {
                               $("#curr_loc").val(results[0].formatted_address);
                          } else {
-                              //do something for failure
+                              $("#curr_loc").val(point.toString());
                          }
                     });
                });
           }
+          
+          $("#loc").keyup(function(event){
+               codeAddress();
+          });
      });
+     
+     function addMarker(point, text) {          
+          var marker = new google.maps.Marker({
+               position: point,
+               map: map,
+               title: text
+          });
+          
+          return marker;
+     }
+     
+     function codeAddress() {
+          var address = $("#loc").val();
+          if(address.length > 3) {
+               geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                         endMarker = addMarker(results[0].geometry.location, "Event's Location");
+                         //map.setZoom(20);
+                         var bounds = new google.maps.LatLngBounds();
+                         
+                         bounds.extend(startMarker.getPosition());
+                         bounds.extend(endMarker.getPosition());
+                         map.fitBounds(bounds);
+                    } else {
+                         if(console)
+                              console.log("Geocode was not successful for the following reason: " + status);
+                    }
+               });
+          }
+     }
 </script>
 </head>
 <body>
