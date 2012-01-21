@@ -77,61 +77,61 @@
 // ## Annotated Source
 
 (function($, undefined) {
-  "use strict";
+     "use strict";
 
-  // Register a prefilter that checks whether the `iframe` option is set, and
-  // switches to the "iframe" data type if it is `true`.
-  $.ajaxPrefilter(function(options, origOptions, jqXHR) {
-    if (options.iframe) {
-      return "iframe";
-    }
-  });
+     // Register a prefilter that checks whether the `iframe` option is set, and
+     // switches to the "iframe" data type if it is `true`.
+     $.ajaxPrefilter(function(options, origOptions, jqXHR) {
+          if (options.iframe) {
+               return "iframe";
+          }
+     });
 
-  // Register a transport for the "iframe" data type. It will only activate
-  // when the "files" option has been set to a non-empty list of enabled file
-  // inputs.
-  $.ajaxTransport("iframe", function(options, origOptions, jqXHR) {
-    var form = null,
-        iframe = null,
-        name = "iframe-" + $.now();//,
-        //files = $(options.files).filter(":file:enabled"),
-        //markers = null;
+     // Register a transport for the "iframe" data type. It will only activate
+     // when the "files" option has been set to a non-empty list of enabled file
+     // inputs.
+     $.ajaxTransport("iframe", function(options, origOptions, jqXHR) {
+          var form = null,
+               iframe = null,
+               name = "iframe-" + $.now();//,
+               //files = $(options.files).filter(":file:enabled"),
+               //markers = null;
 
     // This function gets called after a successful submission or an abortion
     // and should revert all changes made to the page to enable the
     // submission via this transport.
-    function cleanUp() {
-      /*markers.replaceWith(function(idx) {
-        return files.get(idx);
-      });*/
-      form.remove();
-      iframe.attr("src", "javascript:false;").remove();
-    }
+     function cleanUp() {
+          /*markers.replaceWith(function(idx) {
+               return files.get(idx);
+          });*/
+          form.remove();
+          iframe.attr("src", "javascript:false;").remove();
+     }
 
     // Remove "iframe" from the data types list so that further processing is
     // based on the content type returned by the server, without attempting an
     // (unsupported) conversion from "iframe" to the actual type.
-    options.dataTypes.shift();
+     options.dataTypes.shift();
 
-    if (true/*files.length*/) {
-      form = $("<form method='post'></form>").
-        hide().attr({action: options.url, target: name});
+     if (true/*files.length*/) {
+          form = $("<form method='post'></form>").
+          hide().attr({action: options.url, target: name});
 
       // If there is any additional data specified via the `data` option,
       // we add it as hidden fields to the form. This (currently) requires
       // the `processData` option to be set to false so that the data doesn't
       // get serialized to a string.
-      if (typeof(options.data) === "string" && options.data.length > 0) {
-        $.error("data must not be serialized");
-      }
-      $.each(options.data || {}, function(name, value) {
-        if ($.isPlainObject(value)) {
-          name = value.name;
-          value = value.value;
-        }
-        $("<input type='hidden'>").attr({name:  name, value: value}).
-          appendTo(form);
-      });
+          if (typeof(options.data) === "string" && options.data.length > 0) {
+               $.error("data must not be serialized");
+          }
+          $.each(options.data || {}, function(name, value) {
+               if ($.isPlainObject(value)) {
+                    name = value.name;
+                    value = value.value;
+               }
+               $("<input type='hidden'>").attr({name:  name, value: value}).
+               appendTo(form);
+          });
 
       // Add a hidden `X-Requested-With` field with the value `IFrame` to the
       // field, to help server-side code to determine that the upload happened
@@ -148,7 +148,7 @@
       }).next();
       files.appendTo(form);
 */
-      return {
+     return {
 
         // The `send` function is called by jQuery when the request should be
         // sent.

@@ -13,83 +13,77 @@
 </script>
 
 <script type="text/javascript">
-function resizeWindow() {
-  window.setTimeout(function() {
-    chrome.tabs.getCurrent(function (tab) {
-      var newHeight = Math.min(document.body.offsetHeight + 140, 700);
-      chrome.windows.update(tab.windowId, {
-        height: newHeight,
-        width: 520
-      });
-    });
-  }, 150);
-};
-      function auth() {
-        var config = {
+     function auth() {
+          var config = {
           'client_id': '449320697674.apps.googleusercontent.com',
           'scope': 'https://www.googleapis.com/auth/calendar'
-        };
-        gapi.auth.authorize(config, function() {
+          };
+          gapi.auth.authorize(config, function() {
           console.log('login complete');
           console.log(gapi.auth.getToken());
           token = gapi.auth.getToken();
           document.cookie = 'access_token=' + token.access_token + ',expires=' + token.expires_in;
-	        });
-      }
-var text;
-var access_token;
-document.addEventListener("DOMContentLoaded", function () {
-  text = window.location.hash.substring(1);
-  if (text) {
-    //auth();
-    addevent(text);
-    getevent();
-  }
-});
-function loadCookies() {
-var cr = []; if (document.cookie != '') {
-  var ck = document.cookie.toString().split('; ');
-    for (var i=ck.length - 1; i>= 0; i--) {
-      console.log(ck);
-      var comaparams = ck[i].split(',');
-      for (var j=comaparams.length - 1; j>= 0; j--) {
-        var equparams = comaparams[j].split('=');
-        cr[equparams[0]]=equparams[1];
-      }
-    }
-  }
-return cr;
-}
-      function getresult(root) {
-        console.log(root);
-}
-      function addevent(text) {
-        var cookies = loadCookies();//console.log(cookies);
-        if (cookies['access_token'] != null)
-          access_token = cookies['access_token'];
-        else {
-          //auth();
-          //addevent();
-          console.log("Not authenticated");
-          return;
-          //cookies = loadCookies();
-          //if (cookies['access_token'] != null)
-            //user = cookies['access_token'];
-        }
-        console.log(access_token);
-        action = "https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd?access_token="+access_token+"&text="+text;
-         $.ajax(action, {
-             iframe: true
-         }).complete(function(data) {
-             console.log(data);
-         });
-}
-function getevent() {
-  url="https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token="+access_token+"&maxResults=20&orderBy=updated";
-  $.ajax(url,{crossDomain: true,dataType: "jsonp",jsonp: false, jsonpCallback: "getresult"} /*,function(data) { console.log(data); }*/);
-}
+          });
+     }
+     
+     var text;
+     var access_token;
+     document.addEventListener("DOMContentLoaded", function () {
+          text = window.location.hash.substring(1);
+          if (text) {
+               //auth();
+               addevent(text);
+               getevent();
+          }
+     });
+     
+     function loadCookies() {
+          var cr = []; if (document.cookie != '') {
+               var ck = document.cookie.toString().split('; ');
+                    for (var i=ck.length - 1; i>= 0; i--) {
+                         console.log(ck);
+                         var comaparams = ck[i].split(',');
+                         for (var j=comaparams.length - 1; j>= 0; j--) {
+                              var equparams = comaparams[j].split('=');
+                              cr[equparams[0]]=equparams[1];
+                         }
+                    }
+               }
+          return cr;
+     }
+     
+     function getresult(root) {
+          console.log(root);
+     }
+     
+     function addevent(text) {
+          var cookies = loadCookies();//console.log(cookies);
+          if (cookies['access_token'] != null)
+               access_token = cookies['access_token'];
+          else {
+               //auth();
+               //addevent();
+               console.log("Not authenticated");
+               return;
+               //cookies = loadCookies();
+               //if (cookies['access_token'] != null)
+                    //user = cookies['access_token'];
+          }
+          console.log(access_token);
+          action = "https://www.googleapis.com/calendar/v3/calendars/primary/events/quickAdd?access_token="+access_token+"&text="+text;
+          $.ajax(action, {
+               iframe: true
+          }).complete(function(data) {
+               console.log(data);
+          });
+     }
+     
+     function getevent() {
+          url="https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token="+access_token+"&maxResults=20&orderBy=updated";
+          $.ajax(url,{crossDomain: true,dataType: "jsonp",jsonp: false, jsonpCallback: "getresult"} /*,function(data) { console.log(data); }*/);
+     }
 
-
+     //Maps code.
      var map, geocoder, panorama, startMarker, endMarker, directionDisplay, directionsService;
      $(document).ready(function(){
           var myOptions = {
