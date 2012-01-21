@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-
+<link type="text/css" rel="stylesheet" href="css/humanity/jquery-ui.css">
 <script type="text/javascript" src="js/jquery.js"> </script>
 <script type="text/javascript" src="js/jquery-ui.js"> </script>
 
@@ -16,6 +16,17 @@
   max-width:557px;
   overflow-x:hidden;
   height:375px;
+}
+
+label {
+  width:110px;
+  display: inline-block;
+  text-align:right;
+}
+
+input {
+  min-width:340px;
+  margin-left: 15px;
 }
 </style>
 
@@ -34,23 +45,29 @@
           
           //If the browser supports HTML5 geolocation
           if(navigator.geolocation) {          
-               navigator.geolocation.getCurrentPosition(plotMarker);
+               navigator.geolocation.getCurrentPosition(function(position) {
+                    //Creates a variable called point and sends the latitude and longitude to Google Maps to get your position
+                    point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                    
+                    marker = new google.maps.Marker({
+                         position: point,
+                         map: map,
+                         title: "You are here"
+                    });
+                    
+                    map.setCenter(point);
+                    
+                    
+                    geocoder.geocode( { 'location': point}, function(results, status) {
+                         if (status == google.maps.GeocoderStatus.OK) {
+                              $("#curr_loc").val(results[0].formatted_address);
+                         } else {
+                              //do something for failure
+                         }
+                    });
+               });
           }
      });
-     
-     
-     function plotMarker(position) {
-          //Creates a variable called point and sends the latitude and longitude to Google Maps to get your position
-          point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-          
-          marker = new google.maps.Marker({
-               position: point,
-               map: map,
-               title: "You are here"
-          });
-          
-          map.setCenter(point);
-     }
 </script>
 </head>
 <body>
@@ -94,17 +111,40 @@
    }(document));
 </script>
 
-     <h1>Correct the mistakes we made</h1>
      <form>
-     Title: <input type="text" name="title" /><br />
-     Description: <input type="text" name="desc" /><br />
-     <br />
-     Start Date: <input type="text" name="startdate" /><br />
-     Start time: <input type="text" name="starttime" /><br />
-     End Date: <input type="text" name="enddate" /><br />
-     End time: <input type="text" name="endtime" /><br />
-     Location: <input type="text" name="loc" />
-     </form>
+     <fieldset class="ui-widget-content">
+     <legend class="ui-widget-header ui-corner-all">Correct the Mistakes we Made</legend>
+     
+     <table>
+          <tbody>
+               <label for="title">Title:</label>
+               <input id="title" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="desc">Description:</label>
+               <input id="desc" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               
+               <label for="startdate">Start Date:</label>
+               <input id="startdate" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="starttime">Start Time:</label>
+               <input id="starttime" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="enddate">End Date:</label>
+               <input id="enddate" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="endtime">End Time:</label>
+               <input id="endtime" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="loc">Location:</label>
+               <input id="loc" type="text" class="ui-state-default ui-corner-all">
+               </br>
+               <label for="curr_loc">Your Location:</label>
+               <input id="curr_loc" type="text" class="ui-state-default ui-corner-all">
+          </tbody>
+     </table>
      <div id="map_canvas"></div>
+     </fieldset>
+     </form>
 </body>
 </html>
