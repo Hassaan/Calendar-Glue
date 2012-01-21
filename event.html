@@ -59,8 +59,8 @@
           console.log(data);
           console.log('end get result');
           
-          event = $(JSON.stringify(data.items[data.items.length-1]));
-          
+          event = $.parseJSON(JSON.stringify(data.items[data.items.length-1]));
+                    
           if(event.summary){$("#title").val(event.summary)};
           if(event.discription){$("#startdate").val(event.start.dateTime.split("T")[0])};
           if(event.discription){$("#enddate").val(event.end.dateTime.split("T")[0])};
