@@ -31,7 +31,7 @@ input {
 </style>
 
 <script type="text/javascript">
-     var map, geocoder, panorama, startMarker, endMarker;
+     var map, geocoder, panorama, startMarker, endMarker, directionDisplay, directionsService;
      $(document).ready(function(){
           var myOptions = {
                center: new google.maps.LatLng(-34.397, 150.644),
@@ -41,7 +41,12 @@ input {
           };
           map = new google.maps.Map($("#map_canvas")[0], myOptions);		
           geocoder = new google.maps.Geocoder();
-          panorama = map.getStreetView();
+          panorama = map.getStreetView();;
+          directionsService = new google.maps.DirectionsService();
+          
+          directionsDisplay = new google.maps.DirectionsRenderer();
+          directionsDisplay.setMap(map);
+
           
           //If the browser supports HTML5 geolocation
           if(navigator.geolocation) {
@@ -57,15 +62,21 @@ input {
                               $("#curr_loc").val(point.toString());
                          }
                     });
+                    
+                    codeEndAddress();
                });
-          }
+          }          
+          
+          $("#curr_loc").keyup(function(event){
+               codeStartAddress();
+          });
           
           $("#loc").keyup(function(event){
-               codeAddress();
+               codeEndAddress();
           });
      });
      
-     function addMarker(point, text) {          
+     function addMarker(point, text) {
           var marker = new google.maps.Marker({
                position: point,
                map: map,
@@ -75,23 +86,75 @@ input {
           return marker;
      }
      
-     function codeAddress() {
-          var address = $("#loc").val();
+     function codeStartAddress() {
+          var address = $("#curr_loc").val();
           if(address.length > 3) {
                geocoder.geocode( { 'address': address}, function(results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
-                         endMarker = addMarker(results[0].geometry.location, "Event's Location");
+                         removeMarker(startMarker);
+                         startMarker = addMarker(results[0].geometry.location, address);
                          //map.setZoom(20);
-                         var bounds = new google.maps.LatLngBounds();
                          
-                         bounds.extend(startMarker.getPosition());
-                         bounds.extend(endMarker.getPosition());
-                         map.fitBounds(bounds);
+                         if(typeof(endMarker) == "object"){
+                              zoomAndDraw();
+                         }
                     } else {
                          if(console)
                               console.log("Geocode was not successful for the following reason: " + status);
                     }
                });
+          } else {
+               if(typeof(startMarker) == "object"){
+                    startMarker.setMap(null);
+               }
+          }          
+     }
+     
+     function codeEndAddress() {
+          var address = $("#loc").val();
+          if(address.length > 3) {
+               geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                         removeMarker(endMarker);
+                         endMarker = addMarker(results[0].geometry.location, "Event's Location");
+                         //map.setZoom(20);
+                         zoomAndDraw();
+                    } else {
+                         if(console)
+                              console.log("Geocode was not successful for the following reason: " + status);
+                    }
+               });
+          } else {
+               if(endMarker){
+                    endMarker.setMap(null);
+               }
+          }          
+     }
+     
+     function zoomAndDraw() {
+          var bounds = new google.maps.LatLngBounds();
+                              
+          bounds.extend(startMarker.getPosition());
+          bounds.extend(endMarker.getPosition());
+          map.fitBounds(bounds);
+          
+          request = {
+               origin: startMarker.getPosition(),
+               destination: endMarker.getPosition(),                              
+               travelMode: google.maps.DirectionsTravelMode.DRIVING,
+               optimizeWaypoints: true
+          };
+          
+          directionsService.route(request, function(response, status) {
+               if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+               }
+          });
+     }
+     
+     function removeMarker(marker) {
+          if(typeof(marker) == "object") {
+               marker.setMap(null);
           }
      }
 </script>
