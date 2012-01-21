@@ -4,7 +4,7 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 <link type="text/css" rel="stylesheet" href="css/humanity/jquery-ui.css">
-<link rel="stylesheet" href="css/style.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
 
 
 <script type="text/javascript" src="js/jquery.js"> </script>
@@ -62,10 +62,10 @@
           event = $.parseJSON(JSON.stringify(data.items[data.items.length-1]));
                     
           if(event.summary){$("#title").val(event.summary)};
-          if(event.discription){$("#startdate").val(event.start.dateTime.split("T")[0])};
-          if(event.discription){$("#enddate").val(event.end.dateTime.split("T")[0])};
-          if(event.discription){$("#starttime").val(event.start.dateTime.split("T")[1].split("-")[0])};
-          if(event.discription){$("#endtime").val(event.end.dateTime.split("T")[1].split("-")[0])};
+          if(event.start){$("#startdate").val(event.start.dateTime.split("T")[0])};
+          if(event.end){$("#enddate").val(event.end.dateTime.split("T")[0])};
+          if(event.start){$("#starttime").val(event.start.dateTime.split("T")[1].split("-")[0])};
+          if(event.end){$("#endtime").val(event.end.dateTime.split("T")[1].split("-")[0])};
           if(event.discription){$("#desc").val(event.discription)};
           if(event.location){$("#loc").val(event.location)};
      }
